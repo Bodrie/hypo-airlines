@@ -1,7 +1,8 @@
-//@ts-nocheck
 import { BookingT } from "../types/types";
 
-export const postBooking = async (bookingData: BookingT): Promise<Response> => {
+export const postBooking = async (
+  bookingData: BookingT
+): Promise<Response | any> => {
   const API = import.meta.env.VITE_APP_API;
 
   try {
@@ -14,11 +15,11 @@ export const postBooking = async (bookingData: BookingT): Promise<Response> => {
     });
 
     if (!response.ok) {
-      return response.text();
+      return { isError: true, error: await response.text() };
     }
 
     return response.json();
   } catch (error) {
-    return error;
+    return { isError: true, error: error };
   }
 };
