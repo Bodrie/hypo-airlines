@@ -6,3 +6,9 @@ export type BookingT = {
   departureDate: string;
   returnDate: string;
 };
+
+export type AirportsT = {
+  id: number;
+  code: string;
+  title: string;
+};
