@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Select } from "../../components";
+import { Select, DatePicker } from "../../components";
 import { BookingT } from "../../types/types";
 import { reverseDateFormat } from "../../utils/reverseDateFormat";
 import { postBooking } from "../../services/postBooking";
 import { currentDate } from "../../utils/currentDate";
 import { addOneDay } from "../../utils/addOneDay";
+import arrowRightIcon from "../../assets/arrow-right.png";
 import "./bookingForm.scss";
 
 const BookingForm = () => {
@@ -50,6 +51,8 @@ const BookingForm = () => {
     });
   };
 
+  console.log(inputValues);
+
   return (
     <form className="booking-form" onSubmit={handleBookingSubmit}>
       <p className="form-heading">Book a flight</p>
@@ -88,22 +91,25 @@ const BookingForm = () => {
           onChangeHandler={handleChange}
           required
         />
-        <input
-          className="field date"
-          name="departureDate"
-          type="date"
-          onChange={handleChange}
-          required
-          min={currentDate()}
-        />
-        <input
-          className="field date"
-          name="returnDate"
-          type="date"
-          onChange={handleChange}
-          required
-          min={addOneDay(inputValues.departureDate) || currentDate(1)}
-        />
+        <div className="pickers-wrapper">
+          <DatePicker
+            displayValue={inputValues.departureDate}
+            displayPlaceholder="Departure Date"
+            onChangeHandler={handleChange}
+            pickerInputName="departureDate"
+            pickerMinDate={currentDate()}
+          />
+          <img src={arrowRightIcon} alt="Arrow right" className="icon" />
+          <DatePicker
+            displayValue={inputValues.returnDate}
+            displayPlaceholder="Return Date"
+            onChangeHandler={handleChange}
+            pickerInputName="returnDate"
+            pickerMinDate={
+              addOneDay(inputValues.departureDate) || currentDate(1)
+            }
+          />
+        </div>
       </div>
       {error}
       <button type="submit" className="btn">
