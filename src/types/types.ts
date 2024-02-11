@@ -12,3 +12,7 @@ export type AirportsT = {
   code: string;
   title: string;
 };
+
+export type BookingListT = BookingT & {
+  id: number;
+};
