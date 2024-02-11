@@ -1,7 +1,6 @@
-import { useState, useContext } from "react";
-import { BookingsContext } from "../../context/BookingsContext";
+import { useState } from "react";
 import { Select, DatePicker } from "../../components";
-import { BookingT } from "../../types/types";
+import { BookingListT, BookingT } from "../../types/types";
 import { postBooking } from "../../services/postBooking";
 import { reverseDateFormat } from "../../utils/reverseDateFormat";
 import { currentDate } from "../../utils/currentDate";
@@ -9,7 +8,12 @@ import { addOneDay } from "../../utils/addOneDay";
 import arrowRightIcon from "../../assets/arrow-right.png";
 import "./bookingForm.scss";
 
-const BookingForm = () => {
+type BookingFormProps = {
+  currentBookings: BookingListT[];
+  setCurrentBookings: (data: BookingListT[]) => void;
+};
+
+const BookingForm = ({ currentBookings, setCurrentBookings }: BookingFormProps) => {
   const initialInputState = {
     firstName: "",
     lastName: "",
@@ -20,7 +24,6 @@ const BookingForm = () => {
   };
 
   const [inputValues, setInputValues] = useState<BookingT>(initialInputState);
-  const { addBooking } = useContext(BookingsContext);
   const [error, setError] = useState("");
 
   const handleChange = (
@@ -63,7 +66,8 @@ const BookingForm = () => {
         setError(res.error);
       } else {
         setInputValues(initialInputState);
-        addBooking(res);
+        const updatedBookings = [...currentBookings, res];
+        setCurrentBookings(updatedBookings);
       }
     });
   };

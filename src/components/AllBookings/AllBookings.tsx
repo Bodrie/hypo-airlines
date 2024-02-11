@@ -1,23 +1,34 @@
-import { useContext } from "react";
 import { BookingCard } from "../../components";
-import { BookingsContext } from "../../context/BookingsContext";
 import { useAirports } from "../../hooks/useAirports";
+import { BookingListT } from "../../types/types";
 import "./allBookings.scss";
 
-const AllBookings = () => {
-  const { bookings } = useContext(BookingsContext);
+type AllBookingsProps = {
+  currentBookings: BookingListT[];
+  setCurrentBookings: (data: BookingListT[]) => void;
+};
+
+const AllBookings = ({ currentBookings, setCurrentBookings }: AllBookingsProps) => {
   const airports = useAirports();
+
+  const handleDelete = (id: number) => {
+    const updatedBookings = currentBookings.filter(
+      (booking) => booking.id !== id
+    );
+    setCurrentBookings(updatedBookings);
+  };
 
   return (
     <div className="all-bookings">
       <h2 className="heading">Your current bookings</h2>
       <div className="all-bookings-container">
-        {bookings.map((booking) => {
+        {currentBookings.map((booking) => {
           return (
             <BookingCard
               key={booking.id}
               booking={booking}
               airports={airports}
+              handleDelete={handleDelete}
             />
           );
         })}

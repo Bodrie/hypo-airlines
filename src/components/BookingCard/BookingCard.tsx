@@ -1,5 +1,3 @@
-import { useContext } from "react";
-import { BookingsContext } from "../../context/BookingsContext";
 import { AirportsT, BookingListT } from "../../types/types";
 import { deleteBooking } from "../../services/deleteBooking";
 import { getPropertyById } from "../../utils/getPropertyById";
@@ -8,11 +6,12 @@ import binIcon from "../../assets/bin-icon.png";
 import "./bookingCard.scss";
 
 type BookingCardProps = {
+  handleDelete: (id: number) => void;
   booking: BookingListT;
   airports: AirportsT[];
 };
 
-const BookingCard = ({ booking, airports }: BookingCardProps) => {
+const BookingCard = ({ booking, airports, handleDelete }: BookingCardProps) => {
   const {
     id,
     firstName,
@@ -23,12 +22,10 @@ const BookingCard = ({ booking, airports }: BookingCardProps) => {
     returnDate,
   } = booking;
 
-  const { removeBooking } = useContext(BookingsContext);
-
   const handleDeleteBooking = () => {
     deleteBooking(id).then((res) => {
       if (res?.status === 200) {
-        removeBooking(id);
+        handleDelete(id);
       }
     });
   };
