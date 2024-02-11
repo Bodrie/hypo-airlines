@@ -1,13 +1,13 @@
 import { useState, useContext } from "react";
+import { BookingsContext } from "../../context/BookingsContext";
 import { Select, DatePicker } from "../../components";
 import { BookingT } from "../../types/types";
-import { reverseDateFormat } from "../../utils/reverseDateFormat";
 import { postBooking } from "../../services/postBooking";
+import { reverseDateFormat } from "../../utils/reverseDateFormat";
 import { currentDate } from "../../utils/currentDate";
 import { addOneDay } from "../../utils/addOneDay";
 import arrowRightIcon from "../../assets/arrow-right.png";
 import "./bookingForm.scss";
-import { BookingsContext } from "../../context/BookingsContext";
 
 const BookingForm = () => {
   const initialInputState = {
@@ -50,6 +50,14 @@ const BookingForm = () => {
 
   const handleBookingSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (
+      inputValues.arrivalAirportId === 0 ||
+      inputValues.departureAirportId === 0
+    ) {
+      setError("Departure/Arrival airports are requred!");
+      return;
+    }
+
     postBooking(inputValues).then((res) => {
       if (res.isError) {
         setError(res.error);
@@ -120,10 +128,10 @@ const BookingForm = () => {
           />
         </div>
       </div>
-      {error}
       <button type="submit" className="btn">
         Book now
       </button>
+      <span className="error">{error}</span>
     </form>
   );
 };

@@ -1,6 +1,7 @@
 @import "../../theme/global.scss";
 
 .booking-form {
+  position: relative;
   width: 100%;
   max-width: 500px;
   box-sizing: border-box;
@@ -58,5 +59,13 @@
     border: 1px solid $border-color;
     border-radius: $border-radius;
     cursor: pointer;
+  }
+
+  .error {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 5px;
+    color: red;
   }
 }

@@ -10,7 +10,7 @@ const Select = ({ onChangeHandler, placeholderText, ...rest }: SelectProps) => {
   const airports = useAirports();
 
   return (
-    <select {...rest} onChange={onChangeHandler} defaultValue={0}>
+    <select {...rest} onChange={onChangeHandler}>
       <option value={0} disabled>
         {placeholderText}
       </option>
