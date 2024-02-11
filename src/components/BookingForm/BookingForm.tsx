@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Select, DatePicker } from "../../components";
 import { BookingT } from "../../types/types";
 import { reverseDateFormat } from "../../utils/reverseDateFormat";
@@ -7,17 +7,21 @@ import { currentDate } from "../../utils/currentDate";
 import { addOneDay } from "../../utils/addOneDay";
 import arrowRightIcon from "../../assets/arrow-right.png";
 import "./bookingForm.scss";
+import { BookingsContext } from "../../context/BookingsContext";
 
 const BookingForm = () => {
-  const [error, setError] = useState("");
-  const [inputValues, setInputValues] = useState<BookingT>({
+  const initialInputState = {
     firstName: "",
     lastName: "",
     departureAirportId: 0,
     arrivalAirportId: 0,
     departureDate: "",
     returnDate: "",
-  });
+  };
+
+  const [inputValues, setInputValues] = useState<BookingT>(initialInputState);
+  const { addBooking } = useContext(BookingsContext);
+  const [error, setError] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -47,11 +51,14 @@ const BookingForm = () => {
   const handleBookingSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     postBooking(inputValues).then((res) => {
-      if (res.isError) setError(res.error);
+      if (res.isError) {
+        setError(res.error);
+      } else {
+        setInputValues(initialInputState);
+        addBooking(res);
+      }
     });
   };
-
-  console.log(inputValues);
 
   return (
     <form className="booking-form" onSubmit={handleBookingSubmit}>
@@ -82,6 +89,7 @@ const BookingForm = () => {
           placeholderText="Departure Airport"
           onChangeHandler={handleChange}
           required
+          value={inputValues.departureAirportId}
         />
         <Select
           className="field select"
@@ -90,6 +98,7 @@ const BookingForm = () => {
           placeholderText="Arrival Airport"
           onChangeHandler={handleChange}
           required
+          value={inputValues.arrivalAirportId}
         />
         <div className="pickers-wrapper">
           <DatePicker

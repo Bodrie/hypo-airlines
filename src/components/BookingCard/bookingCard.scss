@@ -1,0 +1,48 @@
+@import "../../theme/global.scss";
+
+.booking-card {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  background-color: $bg-color;
+  border-radius: $border-radius;
+  width: 100%;
+  padding: 1rem 0;
+
+  @extend %box-shadow;
+
+  .item {
+    line-height: 2;
+    font-weight: 600;
+  }
+
+  .left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .airports {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  .icon {
+    width: 25px;
+  }
+
+  .cancel {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+  }
+}
