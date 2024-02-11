@@ -13,7 +13,10 @@ type BookingFormProps = {
   setCurrentBookings: (data: BookingListT[]) => void;
 };
 
-const BookingForm = ({ currentBookings, setCurrentBookings }: BookingFormProps) => {
+const BookingForm = ({
+  currentBookings,
+  setCurrentBookings,
+}: BookingFormProps) => {
   const initialInputState = {
     firstName: "",
     lastName: "",
@@ -58,6 +61,11 @@ const BookingForm = ({ currentBookings, setCurrentBookings }: BookingFormProps) 
       inputValues.departureAirportId === 0
     ) {
       setError("Departure/Arrival airports are requred!");
+      return;
+    }
+
+    if (inputValues.arrivalAirportId === inputValues.departureAirportId) {
+      setError("Departure/Arrival airports should be different!");
       return;
     }
 
